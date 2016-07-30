@@ -1,9 +1,5 @@
 // Starter code for CS241 assignments 9-11
 //
-// C++ translation by Simon Parent (Winter 2011),
-// based on Java code by Ondrej Lhotak,
-// which was based on Scheme code by Gord Cormack.
-// Modified July 3, 2012 by Gareth Davies
 #include <stdlib.h>
 #include <iostream>
 #include <sstream>
@@ -137,13 +133,13 @@ string lv_type(tree* t);
 string factor_type(tree *t){
 	//cout<<"factor"<<endl;
 	//cout<<"t->rule: "<<t->rule<<endl;
-	//factor ¡æ ID  
-	//factor ¡æ NUM  
-	//factor ¡æ NULL  
-	//factor ¡æ LPAREN expr RPAREN  
-	//factor ¡æ AMP lvalue
-	//factor ¡æ STAR factor
-	//factor ¡æ NEW INT LBRACK expr RBRACK
+	//factor Â¡Ã¦ ID  
+	//factor Â¡Ã¦ NUM  
+	//factor Â¡Ã¦ NULL  
+	//factor Â¡Ã¦ LPAREN expr RPAREN  
+	//factor Â¡Ã¦ AMP lvalue
+	//factor Â¡Ã¦ STAR factor
+	//factor Â¡Ã¦ NEW INT LBRACK expr RBRACK
 	if(t->tokens[1] == "ID"){
 		string value = t->children[0]->tokens[1];
 		map<string,string>::iterator it;
@@ -181,10 +177,10 @@ string factor_type(tree *t){
 string term_type(tree *t){
 	//cout<<"term"<<endl;
 	//cout<<"t->rule: "<<t->rule<<endl;
-	//term ¡æ factor 
-	//term ¡æ term STAR factor 
-	//term ¡æ term SLASH factor 
-	//term ¡æ term PCT factor 
+	//term Â¡Ã¦ factor 
+	//term Â¡Ã¦ term STAR factor 
+	//term Â¡Ã¦ term SLASH factor 
+	//term Â¡Ã¦ term PCT factor 
 	if(t->tokens[1] == "factor"){
 		return factor_type(t->children[0]);
 	}
@@ -200,9 +196,9 @@ string term_type(tree *t){
 string expr_type(tree *t){
 	//cout<<"expr"<<endl;
 	//cout<<"t->rule: "<<t->rule<<endl;
-	//expr ¡æ term 
-	//expr ¡æ expr PLUS term 
-	//expr ¡æ expr MINUS term 
+	//expr Â¡Ã¦ term 
+	//expr Â¡Ã¦ expr PLUS term 
+	//expr Â¡Ã¦ expr MINUS term 
 	if(t->tokens[1] == "term"){
 		return term_type(t->children[0]);
 	}
@@ -227,9 +223,9 @@ string expr_type(tree *t){
 string lv_type(tree *t){
 	//cout<<"lvalue"<<endl;
 	//cout<<"t->rule: "<<t->rule<<endl;
-	//lvalue ¡æ ID  
-	//lvalue ¡æ STAR factor
-	//lvalue ¡æ LPAREN lvalue RPAREN  
+	//lvalue Â¡Ã¦ ID  
+	//lvalue Â¡Ã¦ STAR factor
+	//lvalue Â¡Ã¦ LPAREN lvalue RPAREN  
 	if(t->tokens[1] == "ID"){
 		string value = t->children[0]->tokens[1];
 		map<string,string>::iterator it;
@@ -248,12 +244,12 @@ string lv_type(tree *t){
 }
 
 void test_type(tree *t){
-	//test ¡æ expr EQ expr  
-	//test ¡æ expr NE expr  
-	//test ¡æ expr LT expr 
-	//test ¡æ expr LE expr  
-	//test ¡æ expr GE expr	
-	//test ¡æ expr GT expr 
+	//test Â¡Ã¦ expr EQ expr  
+	//test Â¡Ã¦ expr NE expr  
+	//test Â¡Ã¦ expr LT expr 
+	//test Â¡Ã¦ expr LE expr  
+	//test Â¡Ã¦ expr GE expr	
+	//test Â¡Ã¦ expr GT expr 
 	string e1 = expr_type(t->children[0]);
 	string e2 = expr_type(t->children[2]);
 	if(e1 != e2)
@@ -263,13 +259,13 @@ void test_type(tree *t){
 void isValidStatements(tree *t){
 	//cout<<"statements"<<endl;
 	//cout<<"t->rule: "<<t->rule<<endl;
-	/*statements ¡æ
-	statements ¡æ statements statement  
-	statement ¡æ lvalue BECOMES expr SEMI
-	statement ¡æ IF LPAREN test RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE 
-	statement ¡æ WHILE LPAREN test RPAREN LBRACE statements RBRACE 
-	statement ¡æ PRINTLN LPAREN expr RPAREN SEMI
-	statement ¡æ DELETE LBRACK RBRACK expr SEMI*/
+	/*statements Â¡Ã¦
+	statements Â¡Ã¦ statements statement  
+	statement Â¡Ã¦ lvalue BECOMES expr SEMI
+	statement Â¡Ã¦ IF LPAREN test RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE 
+	statement Â¡Ã¦ WHILE LPAREN test RPAREN LBRACE statements RBRACE 
+	statement Â¡Ã¦ PRINTLN LPAREN expr RPAREN SEMI
+	statement Â¡Ã¦ DELETE LBRACK RBRACK expr SEMI*/
 	if(t->tokens.size() == 1) return;
 	else if(t->tokens[1] == "statements"){
 		isValidStatements(t->children[0]);
@@ -301,8 +297,8 @@ void isValidStatements(tree *t){
 }
 
 string dcl_type(tree *t){
-	/*type ¡æ INT
-	type ¡æ INT STAR*/
+	/*type Â¡Ã¦ INT
+	type Â¡Ã¦ INT STAR*/
 	if(t->children[0]->rule == "type INT STAR")
 		return t->children[0]->children[0]->tokens[1]+'*';
 	else
@@ -310,10 +306,10 @@ string dcl_type(tree *t){
 }
 
 void isValidDcls(tree *t){
-	//dcls ¡æ 
-	//dcls ¡æ dcls dcl BECOMES NUM SEMI
-	//dcls ¡æ dcls dcl BECOMES NULL SEMI
-	//dcl ¡æ type ID
+	//dcls Â¡Ã¦ 
+	//dcls Â¡Ã¦ dcls dcl BECOMES NUM SEMI
+	//dcls Â¡Ã¦ dcls dcl BECOMES NULL SEMI
+	//dcl Â¡Ã¦ type ID
 	if(t->tokens.size() == 1) return;
 	else if(t->tokens[1] == "dcls"){
 		isValidDcls(t->children[0]);
@@ -371,29 +367,29 @@ int offset;
 int while_counter = 0;
 
 void genCode(tree *t) {
-	//procedure ¡æ INT WAIN LPAREN dcl COMMA dcl RPAREN LBRACE dcls statements RETURN expr SEMI RBRACE
- //   type ¡æ INT
- //   dcls ¡æ
- //   dcl ¡æ type ID
- //   statements ¡æ
- //   expr ¡æ term
- //   term ¡æ factor
- //   factor ¡æ ID
+	//procedure Â¡Ã¦ INT WAIN LPAREN dcl COMMA dcl RPAREN LBRACE dcls statements RETURN expr SEMI RBRACE
+ //   type Â¡Ã¦ INT
+ //   dcls Â¡Ã¦
+ //   dcl Â¡Ã¦ type ID
+ //   statements Â¡Ã¦
+ //   expr Â¡Ã¦ term
+ //   term Â¡Ã¦ factor
+ //   factor Â¡Ã¦ ID
 
-	//expr ¡æ expr PLUS term ;
-	//expr ¡æ expr MINUS term ;
- //   term ¡æ term STAR factor ;
- //   term ¡æ term SLASH factor ;
- //   term ¡æ term PCT factor ;
- //   factor ¡æ NUM
+	//expr Â¡Ã¦ expr PLUS term ;
+	//expr Â¡Ã¦ expr MINUS term ;
+ //   term Â¡Ã¦ term STAR factor ;
+ //   term Â¡Ã¦ term SLASH factor ;
+ //   term Â¡Ã¦ term PCT factor ;
+ //   factor Â¡Ã¦ NUM
 
-	//statements ¡æ statements statement
-   // statement ¡æ PRINTLN LPAREN expr RPAREN SEMI
+	//statements Â¡Ã¦ statements statement
+   // statement Â¡Ã¦ PRINTLN LPAREN expr RPAREN SEMI
 
-//	dcls ¡æ dcls dcl BECOMES NUM SEMI
-//statement ¡æ lvalue BECOMES expr SEMI
-//lvalue ¡æ ID
-//lvalue ¡æ LPAREN lvalue RPAREN
+//	dcls Â¡Ã¦ dcls dcl BECOMES NUM SEMI
+//statement Â¡Ã¦ lvalue BECOMES expr SEMI
+//lvalue Â¡Ã¦ ID
+//lvalue Â¡Ã¦ LPAREN lvalue RPAREN
 	if(t->tokens[0] == "S"){
 		build_symtbl();
 		//for(map<string,int>::iterator it=symtbl.begin(); it!=symtbl.end(); ++it)
@@ -510,8 +506,8 @@ void genCode(tree *t) {
 		}
 	}
 	else if(t->tokens[0] == "statement"){
-//		test ¡æ expr LT expr
-//statement ¡æ WHILE LPAREN test RPAREN LBRACE statements RBRACE
+//		test Â¡Ã¦ expr LT expr
+//statement Â¡Ã¦ WHILE LPAREN test RPAREN LBRACE statements RBRACE
 		if(t->rule == "statement PRINTLN LPAREN expr RPAREN SEMI"){
 			genCode(t->children[2]);
 			cout<<"lis $5"<<endl;
